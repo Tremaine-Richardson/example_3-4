@@ -9,8 +9,8 @@
 
 
 #define TIME_INCREMENT_MS                       10
-#define HEADLIGHT_ON_DELAY 			            2000
-#define HEADLIGHT_OFF_DELAY			            1000
+#define HEADLIGHT_ON_DELAY 			            1000
+#define HEADLIGHT_OFF_DELAY			            2000
 #define DEBOUNCE_BUTTON_TIME_MS                 40
 
 
@@ -87,7 +87,7 @@ int main()
 void inputsInit()
 {
    driverSeat.mode(PullDown);
-   ignitionSwitch.mode(PullDown);
+   ignitionSwitch.mode(PullUp);
 }
 
 
@@ -113,8 +113,11 @@ void ignitionStateUpdate()
      }
    }
 
-
    if (engineRunning && !driverSeat){
+       if ( ignitionSwitch ){
+       engineOnLED = OFF; 
+       engineRunning = false;
+       }
        // Keep engine running in absence of driver
    }
 }
