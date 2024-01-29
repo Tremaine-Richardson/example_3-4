@@ -12,6 +12,10 @@
 #define HEADLIGHT_ON_DELAY 			            1000
 #define HEADLIGHT_OFF_DELAY			            2000
 #define DEBOUNCE_BUTTON_TIME_MS                 40
+#define HEADLIGHT_OFF_THRESHOLD                 .3
+#define HEADLIGHT_ON_THRESHOLD                  .6
+#define DUSK_THRESHOLD                          .2
+#define DAYLIGHT_THRESHOLD                      .5
 
 
 //=====[Declaration of public data types]======================================
@@ -127,11 +131,11 @@ void headlightStateUpdate()
     potentiometerReading = potentiometer.read();
     lightSensorReading = lightSensor.read();
     if ( engineRunning ) {
-        if ( potentiometerReading > .3 ) {  
-            if ( potentiometerReading < .6 ) {  //Mode is AUTO
+        if ( potentiometerReading > HEADLIGHT_OFF_THRESHOLD ) {  
+            if ( potentiometerReading < HEADLIGHT_ON_THRESHOLD ) {  //Mode is AUTO
                  accumulatedTimeDelay = accumulatedTimeDelay + TIME_INCREMENT_MS;
-                if ( lightSensorReading > .2 ) {
-                    if ( lightSensorReading < .5 ) { //Neither Daylight or Dusk
+                if ( lightSensorReading > DUSK_THRESHOLD ) {
+                    if ( lightSensorReading < DAYLIGHT_THRESHOLD ) { //Neither Daylight or Dusk
                         accumulatedTimeDelay = 0;
                     }
                     else { //Daylight
